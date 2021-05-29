@@ -7,45 +7,75 @@
           <v-container>
             <v-form pa-2 ma-2>
               <v-text-field
-                color="secondary"
-                outlined
-                required
-                @input="$v.cardNumber.$touch()"
-                @blur="$v.cardNumber.$touch()"
-                v-model="cardNumber"
-                label="Card Number"
-                v-mask="'#### #### #### ####'"
-                :error-messages="cardNumberErrors"
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.customerName.$touch()"
+                  @blur="$v.customerName.$touch()"
+                  label="Name"
+                  v-model="customerName"
+                  :error-messages="cardCustomerNameErrors"
               ></v-text-field>
               <v-text-field
-                color="secondary"
-                outlined
-                required
-                @input="$v.cardName.$touch()"
-                @blur="$v.cardName.$touch()"
-                label="Cardholder Name"
-                v-model="cardName"
-                :error-messages="cardNameErrors"
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.customerSurname.$touch()"
+                  @blur="$v.customerSurname.$touch()"
+                  label="Surname"
+                  v-model="customerSurname"
+                  :error-messages="cardCustomerSurnameErrors"
               ></v-text-field>
               <v-text-field
-                color="secondary"
-                outlined
-                required
-                @input="$v.cardExpiry.$touch()"
-                @blur="$v.cardExpiry.$touch()"
-                label="Card Expiry"
-                v-model="cardExpiry"
-                :error-messages="cardExpiryErrors"
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.customerEmail.$touch()"
+                  @blur="$v.customerEmail.$touch()"
+                  label="Cardholder Name"
+                  v-model="customerEmail"
+                  :error-messages="cardCustomerEmailErrors"
               ></v-text-field>
               <v-text-field
-                color="secondary"
-                outlined
-                required
-                @input="$v.cardCVC.$touch()"
-                @blur="$v.cardCVC.$touch()"
-                label="Card CVC"
-                v-model="cardCVC"
-                :error-messages="cardCVCErrors"
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.cardNumber.$touch()"
+                  @blur="$v.cardNumber.$touch()"
+                  v-model="cardNumber"
+                  label="Card Number"
+                  v-mask="'#### #### #### ####'"
+                  :error-messages="cardNumberErrors"
+              ></v-text-field>
+              <v-text-field
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.cardName.$touch()"
+                  @blur="$v.cardName.$touch()"
+                  label="Cardholder Name"
+                  v-model="cardName"
+                  :error-messages="cardNameErrors"
+              ></v-text-field>
+              <v-text-field
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.cardExpiry.$touch()"
+                  @blur="$v.cardExpiry.$touch()"
+                  label="Card Expiry"
+                  v-model="cardExpiry"
+                  :error-messages="cardExpiryErrors"
+              ></v-text-field>
+              <v-text-field
+                  color="secondary"
+                  outlined
+                  required
+                  @input="$v.cardCVC.$touch()"
+                  @blur="$v.cardCVC.$touch()"
+                  label="Card CVC"
+                  v-model="cardCVC"
+                  :error-messages="cardCVCErrors"
               ></v-text-field>
               <v-btn block color="accent" @click="submit">Submit</v-btn>
             </v-form>
@@ -57,18 +87,21 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import { validationMixin } from "vuelidate";
-import { required, helpers } from "vuelidate/lib/validators";
+import {mapGetters, mapState} from "vuex";
+import {validationMixin} from "vuelidate";
+import {helpers, required} from "vuelidate/lib/validators";
 
 const ccvalidate = helpers.regex(
-  "alpha",
-  /(\d{4} *\d{4} *\d{4} *\d{4})/
+    "alpha",
+    /(\d{4} *\d{4} *\d{4} *\d{4})/
 ); /* I know, I know... */
 
 export default {
   data() {
     return {
+      customerName: null,
+      customerSurname: null,
+      customerEmail: null,
       cardNumber: null,
       cardExpiry: null,
       cardName: null,
@@ -105,11 +138,29 @@ export default {
   computed: {
     ...mapGetters(["cartTotalAmount", "getCart"]),
     ...mapState(["cart"]),
+    cardCustomerNameErrors() {
+      const errors = [];
+      if (!this.$v.cardName.$dirty) return errors;
+      !this.$v.cardName.required && errors.push("Customer name is required.");
+      return errors;
+    },
+    cardCustomerSurnameErrors() {
+      const errors = [];
+      if (!this.$v.cardName.$dirty) return errors;
+      !this.$v.cardName.required && errors.push("Customer surname is required.");
+      return errors;
+    },
+    cardCustomerEmailErrors() {
+      const errors = [];
+      if (!this.$v.cardName.$dirty) return errors;
+      !this.$v.cardName.required && errors.push("Customer e-mail is required.");
+      return errors;
+    },
     cardNumberErrors() {
       const errors = [];
       if (!this.$v.cardNumber.$dirty) return errors;
       !this.$v.cardNumber.ccvalidate &&
-        errors.push("Valid card number is required.");
+      errors.push("Valid card number is required.");
       !this.$v.cardNumber.required && errors.push("Card number is required.");
       return errors;
     },

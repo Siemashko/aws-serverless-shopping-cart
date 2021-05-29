@@ -67,10 +67,11 @@ const routes = [{
     component: Auth
   }, {
     path: '/checkout',
-    component: Payment,
-    meta: {
-      requiresAuth: true
-    }
+    component: Payment
+    // ,
+    // meta: {
+    //   requiresAuth: true
+    // }
   }
 ]
 

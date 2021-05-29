@@ -289,8 +289,8 @@ Resources:
             RestApiId: !Ref CartApi
             Path: /cart/checkout
             Method: post
-            Auth:
-              Authorizer: CognitoAuthorizer
+#            Auth:
+#              Authorizer: CognitoAuthorizer
 
   GetCartTotalFunction:
     Type: AWS::Serverless::Function
