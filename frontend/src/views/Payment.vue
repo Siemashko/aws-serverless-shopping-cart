@@ -91,7 +91,6 @@
 import {mapGetters, mapState} from "vuex";
 import {validationMixin} from "vuelidate";
 import {helpers, required} from "vuelidate/lib/validators";
-import {getEmail} from "@/backend/api";
 
 
 const ccvalidate = helpers.regex(
@@ -101,9 +100,11 @@ const ccvalidate = helpers.regex(
 
 export default {
   data() {
-    let email = getEmail();
+    let user = this.$store.state.user
+    let email = null;
     let emailDisabled = false;
-    if(email) {
+    if(user) {
+      email = user.getSignInUserSession().getIdToken().decodePayload()["email"];
       emailDisabled = true;
     }
     return {

@@ -12,6 +12,7 @@ export default new Vuex.Store({
     products: null,
     cart: [],
     user: null,
+    email: null,
     loading: false,
     cartLoading: 0,
     loadingText: ""
