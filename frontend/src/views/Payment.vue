@@ -32,9 +32,10 @@
                   required
                   @input="$v.customerEmail.$touch()"
                   @blur="$v.customerEmail.$touch()"
-                  label="Cardholder Name"
+                  label="Customer E-mail"
                   v-model="customerEmail"
                   :error-messages="cardCustomerEmailErrors"
+                  :disabled="emailDisabled"
               ></v-text-field>
               <v-text-field
                   color="secondary"
@@ -90,6 +91,8 @@
 import {mapGetters, mapState} from "vuex";
 import {validationMixin} from "vuelidate";
 import {helpers, required} from "vuelidate/lib/validators";
+import {getEmail} from "@/backend/api";
+
 
 const ccvalidate = helpers.regex(
     "alpha",
@@ -98,10 +101,16 @@ const ccvalidate = helpers.regex(
 
 export default {
   data() {
+    let email = getEmail();
+    let emailDisabled = false;
+    if(email) {
+      emailDisabled = true;
+    }
     return {
       customerName: null,
       customerSurname: null,
-      customerEmail: null,
+      customerEmail: email,
+      emailDisabled: emailDisabled,
       cardNumber: null,
       cardExpiry: null,
       cardName: null,
@@ -110,6 +119,15 @@ export default {
   },
   mixins: [validationMixin],
   validations: {
+    customerName: {
+      required
+    },
+    customerSurname: {
+      required
+    },
+    customerEmail: {
+      required
+    },
     cardNumber: {
       required,
       ccvalidate: ccvalidate
@@ -140,20 +158,20 @@ export default {
     ...mapState(["cart"]),
     cardCustomerNameErrors() {
       const errors = [];
-      if (!this.$v.cardName.$dirty) return errors;
-      !this.$v.cardName.required && errors.push("Customer name is required.");
+      if (!this.$v.customerName.$dirty) return errors;
+      !this.$v.customerName.required && errors.push("Customer name is required.");
       return errors;
     },
     cardCustomerSurnameErrors() {
       const errors = [];
-      if (!this.$v.cardName.$dirty) return errors;
-      !this.$v.cardName.required && errors.push("Customer surname is required.");
+      if (!this.$v.customerSurname.$dirty) return errors;
+      !this.$v.customerSurname.required && errors.push("Customer surname is required.");
       return errors;
     },
     cardCustomerEmailErrors() {
       const errors = [];
-      if (!this.$v.cardName.$dirty) return errors;
-      !this.$v.cardName.required && errors.push("Customer e-mail is required.");
+      if (!this.$v.customerEmail.$dirty) return errors;
+      !this.$v.customerEmail.required && errors.push("Customer e-mail is required.");
       return errors;
     },
     cardNumberErrors() {

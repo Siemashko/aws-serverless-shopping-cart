@@ -2,6 +2,7 @@ import {
     Auth,
     API
 } from 'aws-amplify'
+import jwt_decode from "jwt-decode";
 
 async function getHeaders(includeAuth) {
     const headers = {
@@ -24,6 +25,22 @@ async function getHeaders(includeAuth) {
         headers['Authorization'] = authheader
     }
     return headers
+}
+
+export async function getEmail() {
+    let session = null
+    try {
+        session = await Auth.currentSession()
+    } catch (e) {
+        e == e
+    }
+    let customerEmail = null;
+    if (session) {
+        let token = session.getIdToken().jwtToken;
+        let decoded = jwt_decode(token);
+        customerEmail = decoded["email"];
+    }
+    return customerEmail;
 }
 
 export async function getCart() {
