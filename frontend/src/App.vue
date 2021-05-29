@@ -4,8 +4,8 @@
       <v-toolbar-title>
         <router-link tag="div" to="/">
           <a class="accent--text header font-weight-black">
-            DEMO
-            <span class="font-weight-thin subheading secondary--text">Store</span>
+            FROG
+            <span class="font-weight-thin subheading secondary--text">Shop</span>
           </a>
         </router-link>
       </v-toolbar-title>
@@ -76,6 +76,6 @@ export default {
 
 :root {
   /* Colors */
-  --amazonOrange: #e88b01 !important;
+  --amazonOrange: #47d167 !important;
 }
 </style>
