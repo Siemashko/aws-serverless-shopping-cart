@@ -22,8 +22,7 @@ table = dynamodb.Table(os.environ["TABLE_NAME"])
 @tracer.capture_lambda_handler
 def lambda_handler(event, context):
     """
-    Update cart table to use user identifier instead of anonymous cookie value as a key. This will be called when a user
-    is logged in.
+    Delete cart.
     """
     cart_id, _ = get_cart_id(event["headers"])
 
@@ -50,22 +49,10 @@ def lambda_handler(event, context):
     with table.batch_writer() as batch:
         for item in cart_items:
             # Delete ordered items
-            table.update_item(
-                Key={"pk": pk, "sk": f"product#{product_id}"},
-                ExpressionAttributeNames={
-                    "#quantity": "quantity",
-                    "#expirationTime": "expirationTime",
-                    "#productDetail": "productDetail",
-                },
-                ExpressionAttributeValues={
-                    ":val": quantity,
-                    ":productDetail": product,
-                },
-                UpdateExpression="ADD #quantity :val SET #expirationTime = :ttl, #productDetail = :productDetail",
-            )
+            batch.delete_item(Key={"pk": item["pk"], "sk": item["sk"]})
 
-    metrics.add_metric(name="CartCheckedOut", unit="Count", value=1)
-    logger.info({"action": "CartCheckedOut", "cartItems": cart_items})
+    metrics.add_metric(name="CartDeleted", unit="Count", value=1)
+    logger.info({"action": "CartDeleted", "cartItems": cart_items})
 
     return {
         "statusCode": 200,

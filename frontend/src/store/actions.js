@@ -124,6 +124,18 @@ const checkoutCart = ({
         })
 }
 
+const deleteCart = ({
+    commit
+}) => {
+    commit("setLoading", {value: true, message: "This is where we'd handle payment before clearing the cart..."})
+    cartDelete()
+        .then(() => {
+            commit("setUpCart", [])
+            setTimeout(function() {commit("setLoading", {value: false})}, 3000)
+            setTimeout(function() {router.push("/")}, 3200)
+        })
+}
+
 export default {
     setLoading,
     fetchCart,
@@ -132,5 +144,6 @@ export default {
     updateCart,
     removeFromCart,
     addToCart,
-    checkoutCart
+    checkoutCart,
+    deleteCart
 }
