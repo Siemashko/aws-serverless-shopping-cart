@@ -85,3 +85,12 @@ export async function cartCheckout() {
         })
     )
 }
+
+export async function cartDelete() {
+    return getHeaders(true).then(
+        headers => API.post("CartAPI", "/cart/delete", {
+            headers: headers,
+            withCredentials: true
+        })
+    )
+}

@@ -24,6 +24,7 @@
       <v-list-item-content>
         <v-list-item v-if="cartTotalAmount > 0">
           <v-btn to="/checkout" block color="accent">Checkout ${{cartTotalAmount}}</v-btn>
+          <v-btn block color="accent" @click="delete">Delete</v-btn>
         </v-list-item>
         <v-list-item v-else>Cart Empty</v-list-item>
       </v-list-item-content>
@@ -47,6 +48,9 @@ export default {
     ...mapState(["cart"])
   },
   methods: {
+    delete() {
+      this.$store.dispatch("deleteCart");
+    },
     getTotalPrice(item) {
       return new Decimal((item.productDetail.price/100) * item.quantity).toFixed(2);
     }
