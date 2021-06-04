@@ -292,6 +292,31 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
+  DeleteCartFunction:
+    Type: AWS::Serverless::Function
+    DependsOn:
+      - LambdaLoggingPolicy
+    Properties:
+      CodeUri: shopping-cart-service/
+      Handler: delete_cart.lambda_handler
+      Timeout: 10
+      Layers:
+        - !Ref UtilsLayer
+      Environment:
+        Variables:
+          PRODUCT_SERVICE_URL: !Ref ProductServiceUrl
+          USERPOOL_ID: !Ref UserPoolId
+      Role: !GetAtt AddToCartRole.Arn
+      Events:
+        AddToCart:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CartApi
+            Path: /cart/delete
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+
   GetCartTotalFunction:
     Type: AWS::Serverless::Function
     DependsOn:
