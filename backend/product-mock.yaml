@@ -36,6 +36,7 @@ Resources:
     Properties:
       CodeUri: product-mock-service/
       Handler: get_product.lambda_handler
+      Role: !GetAtt GetProductsRole.Arn
       Events:
         ListCart:
           Type: Api
@@ -48,6 +49,7 @@ Resources:
     Properties:
       CodeUri: product-mock-service/
       Handler: get_products.lambda_handler
+      Role: !GetAtt GetProductsRole.Arn
       Events:
         ListCart:
           Type: Api
@@ -61,6 +63,57 @@ Resources:
       Type: String
       Name: /serverless-shopping-cart-demo/products/products-api-url
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+      
+  DynamoDBProductTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: productId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: productId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: 'NEW_AND_OLD_IMAGES'
+      TableName: aws-serverless-productdatabase
+      TimeToLiveSpecification:
+        AttributeName: expirationTime
+        Enabled: True
+        
+  GetProductsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+            - "sts:AssumeRole"
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+                
+  DynamoDBProductReadPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: DynamoDBReadPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action: [
+              "dynamodb:GetItem",
+              "dynamodb:Scan",
+              "dynamodb:Query",
+              "dynamodb:BatchGetItem",
+              "dynamodb:DescribeTable"
+              ]
+            Resource:
+              - !GetAtt DynamoDBProductTable.Arn
+      Roles:
+        - !Ref GetProductsRole
 
 
 Outputs:
