@@ -13,9 +13,6 @@ metrics = Metrics()
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("aws-serverless-productdatabase")
 
-with open("product_list.json", "r") as product_list:
-    product_list = json.load(product_list)
-
 HEADERS = {
     "Access-Control-Allow-Origin": os.environ.get("ALLOWED_ORIGIN"),
     "Access-Control-Allow-Headers": "Content-Type",
