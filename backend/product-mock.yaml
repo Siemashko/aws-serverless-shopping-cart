@@ -142,6 +142,11 @@ Resources:
                 Rules:
                   - Name: suffix
                     Value: 'product.json'
+#
+#  ProductBucket:
+#    Type: AWS::S3::Bucket
+#    Properties:
+#      BucketName: !Ref ProductBucketName
 
 Outputs:
   ProductApi:
