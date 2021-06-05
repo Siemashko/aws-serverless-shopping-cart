@@ -7,9 +7,9 @@ Description: >
 Parameters:
   AllowedOrigin:
     Type: 'String'
-  SrcS3Bucket:
-    Type: String
-    Description: S3 Bucket for source code storage
+  ProductBucketName:
+    Type: 'String'
+    Default: 'product-input-bucket'
 
 Globals:
   Function:
@@ -130,23 +130,23 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref DynamoDBProductTable
         - S3ReadPolicy:
-            BucketName: !Ref SrcS3Bucket
+            BucketName: !Ref ProductBucketName
       Events:
         FileUpload:
           Type: S3
           Properties:
-            Bucket: !Sub "arn:aws:s3:::${SrcS3Bucket}"
+            Bucket: !Ref ProductBucket
             Events: s3:ObjectCreated:*
             Filter:
               S3Key:
                 Rules:
                   - Name: suffix
-                    Value: 'product.json'
-#
-#  ProductBucket:
-#    Type: AWS::S3::Bucket
-#    Properties:
-#      BucketName: !Ref ProductBucketName
+                    Value: '.json'
+
+  ProductBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ProductBucketName
 
 Outputs:
   ProductApi:
