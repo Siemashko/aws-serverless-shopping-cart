@@ -46,7 +46,8 @@ Resources:
                     - "s3:ListBucket"
                     - "s3:CreateBucket"
                 Resource:
-                    - "arn:aws:s3::*:*"
+                    - !Sub "arn:aws:s3:::${SrcS3Bucket}"
+                    - !Sub "arn:aws:s3:::${SrcS3Bucket}/*"
               -
                 Effect: "Allow"
                 Action:
