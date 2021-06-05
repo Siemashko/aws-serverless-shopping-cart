@@ -46,10 +46,7 @@ Resources:
                     - "s3:ListBucket"
                     - "s3:CreateBucket"
                 Resource:
-                    - !Sub "arn:aws:s3:::${SrcS3Bucket}"
-                    - !Sub "arn:aws:s3:::${SrcS3Bucket}/*"
-                    - !Sub "arn:aws:s3:::product-input-bucket"
-
+                    - "*"
               -
                 Effect: "Allow"
                 Action:
