@@ -9,6 +9,7 @@ Parameters:
     Type: 'String'
   ProductBucketName:
     Type: 'String'
+    Default: 'product-input-bucket'
 
 Globals:
   Function:
