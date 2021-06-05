@@ -3,9 +3,11 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   product-service
 
-  SAM Template for mock product-service
+  SAM Template for product-service
 Parameters:
   AllowedOrigin:
+    Type: 'String'
+  BucketName:
     Type: 'String'
 
 Globals:
@@ -63,7 +65,7 @@ Resources:
       Type: String
       Name: /serverless-shopping-cart-demo/products/products-api-url
       Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
-      
+
   DynamoDBProductTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -115,6 +117,67 @@ Resources:
       Roles:
         - !Ref GetProductsRole
 
+  ProductBucket:
+    Type: AWS::S3::Bucket
+    DependsOn:
+      - ScheduleProductFromS3Permission
+    Properties:
+      BucketName: !Ref BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt ScheduleProductFromS3Function.Arn
+            Filter:
+              S3Key:
+                Rules:
+                - Name: suffix
+                  Value: .txt
+
+  ScheduleProductFromS3Permission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref ScheduleProductFromS3Function
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub 'arn:aws:s3:::${BucketName}'
+      SourceAccount: !Ref AWS::AccountId
+
+  ScheduleProductFromS3ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: allowLogging
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource: arn:aws:logs:*:*:*
+        - PolicyName: getAndDeleteObjects
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:DeleteObject
+                Resource:  !Sub 'arn:aws:s3:::${BucketName}/*'
+
+  ScheduleProductFromS3Function:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: schedule_product_from_s3.lambda_handler
+      Role: !GetAtt ScheduleProductFromS3ExecutionRole.Arn
 
 Outputs:
   ProductApi:
