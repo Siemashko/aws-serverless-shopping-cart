@@ -9,7 +9,6 @@ Parameters:
     Type: 'String'
   ProductBucketName:
     Type: 'String'
-    Default: 'product-bucket'
 
 Globals:
   Function:
@@ -118,7 +117,7 @@ Resources:
       Roles:
         - !Ref GetProductsRole
 
-  ImportFunction:
+  ScheduleProductFromS3Function:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: product-mock-service/
