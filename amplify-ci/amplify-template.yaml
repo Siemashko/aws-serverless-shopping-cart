@@ -46,7 +46,7 @@ Resources:
                     - "s3:ListBucket"
                     - "s3:CreateBucket"
                 Resource:
-                    - "*"
+                    - "arn:aws:s3::*:*"
               -
                 Effect: "Allow"
                 Action:
