@@ -1,7 +1,4 @@
-import {
-    Auth,
-    API
-} from 'aws-amplify'
+import {API, Auth} from 'aws-amplify'
 
 async function getHeaders(includeAuth) {
     const headers = {
@@ -61,10 +58,22 @@ export async function putCart(obj, quantity) {
 }
 
 export async function getProducts(filterParams) {
+
+    let queryParams = {};
+    if (filterParams) {
+        if (filterParams.c.length > 0) {
+            queryParams.c = filterParams.c.join(",");
+        }
+        if (filterParams.p) {
+            queryParams.pl = filterParams.p[0]*100;
+            queryParams.ph = filterParams.p[1]*100;
+        }
+    }
+
     return getHeaders().then(
         headers => API.get("ProductAPI", "/product", {
             headers: headers,
-            queryStringParameters: filterParams
+            queryStringParameters: queryParams
         })
     )
 }

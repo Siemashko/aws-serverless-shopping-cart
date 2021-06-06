@@ -27,9 +27,16 @@ const fetchProduct = ({
 }
 const fetchProducts = ({
     commit
+}, filterParams) => {
+    getProducts(filterParams).then((response) => {
+        commit("setUpProducts", response.products);
+    });
+}
+const fetchCategories = ({
+    commit
 }) => {
     getProducts().then((response) => {
-        commit("setUpProducts", response.products);
+        commit("setUpCategories", response.products);
     });
 }
 const fetchCart = ({
@@ -150,6 +157,7 @@ export default {
     fetchCart,
     fetchProducts,
     fetchProduct,
+    fetchCategories,
     migrateCart,
     updateCart,
     removeFromCart,

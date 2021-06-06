@@ -2,7 +2,7 @@
   <v-container grid-list-md fluid class="mt-0" pt-0>
       <v-layout align-center justify-center row wrap>
         <v-flex xs12 lg7 sm7 xl7>
-          <product :product="product" :enableLink="false" :key="this.$route.params.id"/>
+          <product :product="product" :enableLink="false" :end-date="new Date(product.availableSince)" :key="this.$route.params.id"/>
         </v-flex>
       </v-layout>
     </v-container>

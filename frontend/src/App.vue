@@ -11,7 +11,7 @@
       </v-toolbar-title>
       <v-toolbar-items>
         <v-btn to="/auth" v-if="!currentUser" text class="ml-2">Sign In</v-btn>
-        <cart-button @drawerChange="toggleDrawer" />
+        <cart-button @drawerChange="toggleDrawer"/>
         <div class="sign-out">
           <amplify-sign-out v-if="currentUser" class="Form--signout pl-2"></amplify-sign-out>
         </div>
@@ -19,28 +19,28 @@
     </v-app-bar>
     <v-content>
       <v-container fluid>
-        <loading-overlay />
-        <v-fade-transition mode="out-in">
-          <router-view></router-view>
-        </v-fade-transition>
+          <loading-overlay/>
+          <v-fade-transition mode="out-in">
+            <router-view></router-view>
+          </v-fade-transition>
       </v-container>
       <v-navigation-drawer
-        style="position:fixed; overflow-y:scroll;"
-        right
-        v-model="drawer"
-        temporary
-        align-space-around
-        column
-        d-flex
+          style="position:fixed; overflow-y:scroll;"
+          right
+          v-model="drawer"
+          temporary
+          align-space-around
+          column
+          d-flex
       >
-        <cart-drawer />
+        <cart-drawer/>
       </v-navigation-drawer>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "app",

@@ -10,6 +10,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     products: null,
+    categories: null,
+    maxPrice: null,
     cart: [],
     user: null,
     email: null,

@@ -1,8 +1,9 @@
 {
-  "category": "sweets",
+  "category": "apparel",
   "createdDate": "2017-04-06T06:21:36 -02:00",
   "description": "Dolore ipsum eiusmod dolore aliquip laborum laborum aute ipsum commodo id irure duis ipsum.",
   "modifiedDate": "2019-09-21T12:08:48 -02:00",
+  "availableSince": "2021-06-06T20:45:00",
   "name": "Frog T-shirt",
   "package": {
     "height": 329,
@@ -11,8 +12,8 @@
     "width": 741
   },
   "pictures": [
-          "https://m.media-amazon.com/images/I/A1ntnF3PJOL._CLa%7C2140%2C2000%7C81Qi26h%2BDpL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"
-        ],
+    "https://m.media-amazon.com/images/I/A1ntnF3PJOL._CLa%7C2140%2C2000%7C81Qi26h%2BDpL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"
+  ],
   "price": 1000,
   "productId": "e-d105-45a5-9b21-ba61995bc6da",
   "tags": [

@@ -10,6 +10,11 @@ const setUpProducts = (state, productsPayload) => {
     state.products = productsPayload;
 }
 
+const setUpCategories = (state, productsPayload) => {
+    state.categories = productsPayload.map((product) => product.category).filter((v, i, a) => a.indexOf(v) === i);
+    // state.maxPrice = Math.max(productsPayload.map((product) => product.price));
+}
+
 const setUpProduct = (state, product) => {
     product.addLoading = false;
     product.removeLoading = false;
@@ -79,6 +84,7 @@ export default {
     setUser,
     setUpProducts,
     setUpProduct,
+    setUpCategories,
     setUpCart,
     addToCart,
     removeFromCart,
