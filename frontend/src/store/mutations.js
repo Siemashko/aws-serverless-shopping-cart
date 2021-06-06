@@ -9,6 +9,12 @@ const setUpProducts = (state, productsPayload) => {
     })
     state.products = productsPayload;
 }
+
+const setUpProduct = (state, product) => {
+    product.addLoading = false;
+    product.removeLoading = false;
+    state.activeProduct = product;
+}
 const setUpCart = (state, cartPayload) => {
     state.cart = cartPayload;
 }
@@ -72,6 +78,7 @@ const updateCart = (state, obj) => {
 export default {
     setUser,
     setUpProducts,
+    setUpProduct,
     setUpCart,
     addToCart,
     removeFromCart,

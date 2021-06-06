@@ -60,9 +60,18 @@ export async function putCart(obj, quantity) {
     )
 }
 
-export async function getProducts() {
+export async function getProducts(filterParams) {
     return getHeaders().then(
         headers => API.get("ProductAPI", "/product", {
+            headers: headers,
+            queryStringParameters: filterParams
+        })
+    )
+}
+
+export async function getProduct(productId) {
+    return getHeaders().then(
+        headers => API.get("ProductAPI", "/product/" + productId, {
             headers: headers
         })
     )

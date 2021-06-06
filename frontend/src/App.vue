@@ -76,6 +76,8 @@ export default {
 
 :root {
   /* Colors */
-  --amazonOrange: #47d167 !important;
+  --amplify-primary-color: #94ff47;
+  --amplify-primary-tint: #c5ef77;
+  --amplify-primary-shade: #2e8f02;
 }
 </style>

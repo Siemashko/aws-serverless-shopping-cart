@@ -1,1 +1,2 @@
 aws-lambda-powertools==1.0.0
+jsonpickle==2.0.0

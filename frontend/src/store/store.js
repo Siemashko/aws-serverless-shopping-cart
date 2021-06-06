@@ -15,7 +15,8 @@ export default new Vuex.Store({
     email: null,
     loading: false,
     cartLoading: 0,
-    loadingText: ""
+    loadingText: "",
+    activeProduct: null
   },
   getters,
   mutations,

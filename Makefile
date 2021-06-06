@@ -34,7 +34,6 @@ amplify-deploy:
 			OauthToken=$(GITHUB_OAUTH_TOKEN) \
 			Repository=$(GITHUB_REPO) \
 			BranchName=$(GITHUB_BRANCH) \
-			SrcS3Bucket=$(S3_BUCKET) \
 		--stack-name CartApp
 
 frontend-serve: 

@@ -13,6 +13,7 @@ import * as AmplifyModules from 'aws-amplify'
 import {
   AmplifyPlugin
 } from 'aws-amplify-vue'
+import ProductDetails from "@/views/ProductDetails";
 
 Vue.use(AmplifyPlugin, AmplifyModules)
 
@@ -72,6 +73,9 @@ const routes = [{
     // meta: {
     //   requiresAuth: true
     // }
+  }, {
+    path: '/product/:id',
+    component: ProductDetails
   }
 ]
 

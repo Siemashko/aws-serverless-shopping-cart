@@ -22,6 +22,7 @@ import CartQuantityEditor from "@/components/CartQuantityEditor.vue"
 Vue.config.productionTip = false
 
 Amplify.configure(config)
+
 Vue.use(VueRouter)
 Vue.use(Vuelidate)
 Vue.use(VueMask);

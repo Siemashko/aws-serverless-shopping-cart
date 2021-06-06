@@ -1,0 +1,25 @@
+{
+  "category": "furniture",
+  "createdDate": "2017-04-06T06:21:36 -02:00",
+  "description": "Dolore ipsum eiusmod dolore aliquip laborum laborum aute ipsum commodo id irure duis ipsum.",
+  "modifiedDate": "2019-09-21T12:08:48 -02:00",
+  "name": "Frog chair",
+  "package": {
+    "height": 329,
+    "length": 179,
+    "weight": 293,
+    "width": 741
+  },
+  "pictures": [
+    "https://ih1.redbubble.net/image.1051590966.3041/flat,750x,075,f-pad,750x1000,f8f8f8.jpg"
+  ],
+  "price": 4000,
+  "productId": "d2580eff-d105-45a5-9b21-ba61995bc6da",
+  "tags": [
+    "laboris",
+    "dolor",
+    "in",
+    "labore",
+    "duis"
+  ]
+}

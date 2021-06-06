@@ -48,6 +48,11 @@ Resources:
                 Resource:
                     - !Sub "arn:aws:s3:::${SrcS3Bucket}"
                     - !Sub "arn:aws:s3:::${SrcS3Bucket}/*"
+              -
+                Effect: "Allow"
+                Action:
+                    - "s3:*"
+                Resource:
                     - "arn:aws:s3:::product-input-bucket"
                     - "arn:aws:s3:::product-input-bucket/*"
               -

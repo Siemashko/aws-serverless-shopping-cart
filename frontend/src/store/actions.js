@@ -2,7 +2,9 @@ import {
     postCart,
     getCart,
     getProducts,
+    getProduct,
     cartMigrate,
+    cartDelete,
     putCart,
     cartCheckout
 } from "@/backend/api.js"
@@ -16,6 +18,13 @@ const setLoading = ({
     message: payload.message})
 }
 
+const fetchProduct = ({
+    commit
+}, productId) => {
+    getProduct(productId).then((response) => {
+        commit("setUpProduct", response.product);
+    });
+}
 const fetchProducts = ({
     commit
 }) => {
@@ -140,6 +149,7 @@ export default {
     setLoading,
     fetchCart,
     fetchProducts,
+    fetchProduct,
     migrateCart,
     updateCart,
     removeFromCart,

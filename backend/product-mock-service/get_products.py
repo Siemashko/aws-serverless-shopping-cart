@@ -1,4 +1,5 @@
 import json
+import jsonpickle
 import os
 
 from aws_lambda_powertools import Logger, Tracer
@@ -6,6 +7,7 @@ from decimal import Decimal
 
 import boto3
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Attr
 
 logger = Logger()
 tracer = Tracer()
@@ -55,9 +57,38 @@ def lambda_handler(event, context):
     """
     Return list of all products.
     """
+
+    serialized = jsonpickle.encode(event)
+    logger.debug(json.dumps(json.loads(serialized), indent=2))
+    if 'queryStringParameters' not in event or event['queryStringParameters'] is None or len(event['queryStringParameters']) == 0:
+        return {
+            "statusCode": 200,
+            "headers": HEADERS,
+            "body": json.dumps({"products": [change_dict_from_decimal(e) for e in table.scan()["Items"]]})
+        }
+    else:
+        categories = event['queryStringParameters']['c'].split(",") if 'c' in event['queryStringParameters'] else None
+        price_low = event['queryStringParameters']['pl'] if 'pl' in event['queryStringParameters'] else None
+        price_high = event['queryStringParameters']['ph'] if 'ph' in event['queryStringParameters'] else None
     logger.debug("Fetching product list")
+    filter_expr = None
+    if categories is not None and len(categories) > 0:
+        filter_expr = Attr("category").is_in(categories)
+
+    if price_low is not None:
+        filter_expr = filter_expr & Attr("price").gte(int(price_low)) if filter_expr is not None else Attr("price").gte(int(price_low))
+
+    if price_high is not None:
+        filter_expr = filter_expr & Attr("price").lte(int(price_high)) if filter_expr is not None else Attr("price").lte(int(price_high))
+
+    logger.debug(f"categories: {categories}, price low: {price_low}, price high: {price_high}, filter_expr: {filter_expr}")
+
+    scan_kwargs = {
+        "FilterExpression": filter_expr
+    }
+
     return {
         "statusCode": 200,
         "headers": HEADERS,
-        "body": json.dumps({"products": [change_dict_from_decimal(e) for e in table.scan()["Items"]]})
+        "body": json.dumps({"products": [change_dict_from_decimal(e) for e in table.scan(**scan_kwargs)["Items"]]})
     }
