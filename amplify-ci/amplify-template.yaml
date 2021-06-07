@@ -53,8 +53,8 @@ Resources:
                 Action:
                     - "s3:*"
                 Resource:
-                    - "arn:aws:s3:::product-input-bucket"
-                    - "arn:aws:s3:::product-input-bucket/*"
+                    - "arn:aws:s3:::product-input-bucket-${AWS::Region}:${AWS::AccountId}"
+                    - "arn:aws:s3:::product-input-bucket-${AWS::Region}:${AWS::AccountId}/*"
               -
                 Effect: "Allow"
                 Action:
