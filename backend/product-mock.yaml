@@ -9,7 +9,6 @@ Parameters:
     Type: 'String'
   ProductBucketName:
     Type: 'String'
-    Default: 'product-input-bucket-${AWS::Region}:${AWS::AccountId}'
 
 Globals:
   Function:

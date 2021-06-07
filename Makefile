@@ -8,11 +8,16 @@ ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output text)
 S3_BUCKET = aws-serverless-shopping-cart-src-$(ACCOUNT_ID)-$(REGION)
 endif
 
+ifndef PRODUCT_BUCKET
+ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output text)
+PRODUCT_BUCKET = product-input-bucket-${REGION}-${ACCOUNT_ID}
+endif
+
 
 backend: create-bucket
-	$(MAKE) -C backend TEMPLATE=auth S3_BUCKET=$(S3_BUCKET)
-	$(MAKE) -C backend TEMPLATE=product-mock S3_BUCKET=$(S3_BUCKET)
-	$(MAKE) -C backend TEMPLATE=shoppingcart-service S3_BUCKET=$(S3_BUCKET)
+	$(MAKE) -C backend TEMPLATE=auth S3_BUCKET=$(S3_BUCKET) PRODUCT_BUCKET=$(PRODUCT_BUCKET)
+	$(MAKE) -C backend TEMPLATE=product-mock S3_BUCKET=$(S3_BUCKET) PRODUCT_BUCKET=$(PRODUCT_BUCKET)
+	$(MAKE) -C backend TEMPLATE=shoppingcart-service S3_BUCKET=$(S3_BUCKET) PRODUCT_BUCKET=$(PRODUCT_BUCKET)
 
 backend-delete:
 	$(MAKE) -C backend delete TEMPLATE=auth
@@ -34,6 +39,8 @@ amplify-deploy:
 			OauthToken=$(GITHUB_OAUTH_TOKEN) \
 			Repository=$(GITHUB_REPO) \
 			BranchName=$(GITHUB_BRANCH) \
+			SrcS3Bucket=$(S3_BUCKET) \
+			ProductBucketName=$(PRODUCT_BUCKET) \
 		--stack-name CartApp
 
 frontend-serve: 

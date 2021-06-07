@@ -2,6 +2,13 @@ all: build deploy
 ORIGIN ?= http://localhost:8080
 STACKNAME ?= aws-serverless-shopping-cart
 
+REGION := $(shell python3 -c 'import boto3; print(boto3.Session().region_name)')
+
+ifndef PRODUCT_BUCKET
+ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output text)
+PRODUCT_BUCKET = product-input-bucket-${REGION}-${ACCOUNT_ID}
+endif
+
 build:
 	@echo "Building template $(TEMPLATE).yaml..."
 	@sam build -t $(TEMPLATE).yaml
@@ -13,7 +20,7 @@ deploy:  # s3 bucket still needed for layer
 	            --s3-bucket $(S3_BUCKET) \
 	            --parameter-overrides \
 	            AllowedOrigin=$(ORIGIN) \
-	            SrcS3Bucket=$(S3_BUCKET) \
+	            ProductBucketName=$(PRODUCT_BUCKET) \
 	            --no-fail-on-empty-changeset
 
 tests:
