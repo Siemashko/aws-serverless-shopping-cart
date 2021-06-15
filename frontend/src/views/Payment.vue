@@ -149,7 +149,7 @@ export default {
       if (this.$v.$invalid) {
         console.log("invalid form"); // eslint-disable-line no-console
       } else {
-        this.$store.dispatch("checkoutCart")
+        this.$store.dispatch("deleteCart")
         // TODO: redirect to confirmation
       }
     }
